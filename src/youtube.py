@@ -2,11 +2,8 @@ import feedparser
 from datetime import datetime, timezone, timedelta
 
 CHANNELS = [
-    {"name": "Fireship",   "id": "UCsBjURrPoezykLs9EqgamOA"},
+    {"name": "Fireship",     "id": "UCsBjURrPoezykLs9EqgamOA"},
     {"name": "AI Explained", "id": "UCNJ1Ymd5yFuUPtn21xtRbbw"},
-    {"name": "Andrej Karpathy",   "id": "UCXUPKJO5MZQN11PqgIvyuvQ"},
-    {"name": "Two Minute Papers", "id": "UCbfYPyITQ-7l4upoX8nvctg"},
-    
 ]
 
 def fetch_all_videos(max_per_channel: int = 10) -> list[dict]:
@@ -21,9 +18,10 @@ def fetch_all_videos(max_per_channel: int = 10) -> list[dict]:
             published = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
 
             if published < cutoff:
-                continue  # skip anything older than 24 hours
+                continue
 
             all_videos.append({
+                "video_id": entry.id,         
                 "channel": channel["name"],
                 "title": entry.title,
                 "url": entry.link,
