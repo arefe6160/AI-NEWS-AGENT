@@ -1,31 +1,27 @@
-name: Daily AI News Agent
+name: Daily News Digest
 
 on:
   schedule:
-    - cron: '0 7 * * *'
-  workflow_dispatch: 
+    - cron: '0 7 * * *'   # runs every day at 7:00 AM UTC
+  workflow_dispatch:        # lets you run it manually from GitHub too
 
 jobs:
-  run-agent:
+  send-digest:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/ Pip install
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: pip install requests feedparser python-dotenv resend groq
 
-      - name: Run AI News Agent
+      - name: Run agent
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-
         run: python src/main.py
